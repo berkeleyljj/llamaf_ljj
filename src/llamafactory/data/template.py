@@ -138,9 +138,16 @@ class Template:
                 elements += self.format_user.apply(content=message["content"], idx=str(i // 2))
             elif message["role"] == Role.ASSISTANT.value:
                 elements += self.format_assistant.apply(content=message["content"])
-            elif message["role"] == Role.OBSERVATION.value:
+            # elif message["role"] == Role.OBSERVATION.value:
+            #     elements += self.format_observation.apply(content=message["content"])
+            # elif message["role"] == Role.FUNCTION.value:
+            #     elements += self.format_function.apply(content=message["content"])
+            # Changes for sharegpt format
+            # also accept your “observation” role
+            elif message["role"] in (Role.OBSERVATION.value, "observation"):
                 elements += self.format_observation.apply(content=message["content"])
-            elif message["role"] == Role.FUNCTION.value:
+            # also accept “function_call”
+            elif message["role"] in (Role.FUNCTION.value, "function_call"):
                 elements += self.format_function.apply(content=message["content"])
             else:
                 raise NotImplementedError("Unexpected role: {}".format(message["role"]))
